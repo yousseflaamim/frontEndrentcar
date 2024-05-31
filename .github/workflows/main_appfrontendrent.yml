@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Fix audit issues
-        run: npm audit fix
+        run: npm audit fix --force
 
       - name: Build and test
         run: |
@@ -64,6 +64,13 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FD04CD98C13E48A781DE1A7DE8A670A3 }}
 
       - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'appfrontendrent'
+          slot-name: 'Production'
+          package: .
+
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
