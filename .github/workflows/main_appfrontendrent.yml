@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy Node.js app to Azure Web App - appfrontendrent
 
 on:
@@ -21,9 +18,14 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: npm install, build, and test
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fix audit issues
+        run: npm audit fix
+
+      - name: Build and test
         run: |
-          npm install
           npm run build --if-present
           npm run test --if-present
 
@@ -61,11 +63,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_9C39D683510C419AA0436046B9FC721A }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FD04CD98C13E48A781DE1A7DE8A670A3 }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'appfrontendrent'
           slot-name: 'Production'
           package: .
-          
